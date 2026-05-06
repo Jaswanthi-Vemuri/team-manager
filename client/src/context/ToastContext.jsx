@@ -1,35 +1,41 @@
-import { useState, useCallback } from 'react'
-import Toast from '../components/ui/Toast'
-import { ToastContext } from './toast-context'
+import { createContext, useContext, useState } from 'react'
+
+export const ToastContext = createContext()
 
 export function ToastProvider({ children }) {
-  const [toasts, setToasts] = useState([])
+  const [message, setMessage] = useState(null)
 
-  const addToast = useCallback((message, type = 'info') => {
-    const id = Date.now()
-    setToasts(prev => [...prev, { id, message, type }])
+  const showToast = (msg) => {
+    setMessage(msg)
+
     setTimeout(() => {
-      setToasts(prev => prev.filter(t => t.id !== id))
-    }, 4000)
-  }, [])
-
-  const removeToast = useCallback((id) => {
-    setToasts(prev => prev.filter(t => t.id !== id))
-  }, [])
+      setMessage(null)
+    }, 3000)
+  }
 
   return (
-    <ToastContext.Provider value={{ addToast }}>
+    <ToastContext.Provider value={{ showToast }}>
       {children}
-      <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-2">
-        {toasts.map(toast => (
-          <Toast
-            key={toast.id}
-            message={toast.message}
-            type={toast.type}
-            onClose={() => removeToast(toast.id)}
-          />
-        ))}
-      </div>
+
+      {message && (
+        <div
+          style={{
+            position: 'fixed',
+            top: '20px',
+            right: '20px',
+            background: '#333',
+            color: '#fff',
+            padding: '10px 20px',
+            borderRadius: '5px',
+          }}
+        >
+          {message}
+        </div>
+      )}
     </ToastContext.Provider>
   )
+}
+
+export function useToastContext() {
+  return useContext(ToastContext)
 }
