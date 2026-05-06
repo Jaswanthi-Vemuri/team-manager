@@ -2,9 +2,13 @@
   "name": "server",
   "version": "1.0.0",
   "type": "module",
+  "main": "src/server.js",
+
   "scripts": {
+    "start": "node src/server.js",
     "dev": "nodemon src/server.js"
   },
+
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
@@ -13,10 +17,8 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.5.1"
   },
+
   "devDependencies": {
-    "autoprefixer": "^10.5.0",
-    "nodemon": "^3.1.4",
-    "postcss": "^8.5.14",
-    "tailwindcss": "^4.2.4"
+    "nodemon": "^3.1.4"
   }
 }
